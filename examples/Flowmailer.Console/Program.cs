@@ -12,7 +12,7 @@ namespace Flowmailer.ConsoleApp
         {
             Console.WriteLine("Hello World!");
 
-            Env.Load(".env");
+            Env.TraversePath().Load();
 
             var clientId = Env.GetString("FLOWMAILER_API_CLIENTID");
             var clientSecret = Env.GetString("FLOWMAILER_API_CLIENTSECRET");
