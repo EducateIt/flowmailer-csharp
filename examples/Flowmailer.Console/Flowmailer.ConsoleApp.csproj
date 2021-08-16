@@ -10,12 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include=".env">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="DotNetEnv" Version="2.1.1" />
   </ItemGroup>
 

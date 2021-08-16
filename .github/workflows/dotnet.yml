@@ -51,4 +51,4 @@ jobs:
       env:
         NUGET_API_KEY: ${{secrets.NUGET_API_KEY}}
       #run: echo "PUBLISHING TO NUGET - $GitVersion_InformationalVersion"
-      run: dotnet nuget push -s https://www.nuget.org/api/v2/package -k $NUGET_API_KEY ./packages/*.nupkg
+      run: dotnet nuget push -s https://www.nuget.org/api/v2/package -k $NUGET_API_KEY ./packages/EducateIt.Flowmailer.*.nupkg
