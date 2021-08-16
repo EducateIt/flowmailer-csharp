@@ -2,7 +2,7 @@ assembly-versioning-scheme: MajorMinor
 mode: ContinuousDeployment
 branches:
   # Beta builds come from devleop branch
-  dev:
+  develop:
     regex: ^dev
     tag: beta
     increment: Patch
