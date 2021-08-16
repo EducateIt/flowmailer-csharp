@@ -3,6 +3,7 @@ mode: ContinuousDeployment
 branches:
   # Beta builds come from devleop branch
   dev:
+    regex: ^dev
     tag: beta
     increment: Patch
   # Releases builds from branch name like: 'release/major.minor.patch'
