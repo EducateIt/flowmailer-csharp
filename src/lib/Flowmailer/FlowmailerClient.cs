@@ -72,7 +72,7 @@ namespace Flowmailer
         /// Sends a message.
         /// </summary>
         /// <param name="message"></param>
-        public async Task SendMessage(Message message)
+        public async Task SendMessage(SubmitMessage message)
         {
             var restClient = new RestClient($"https://api.flowmailer.net/{_accountId}");
             restClient.UseNewtonsoftJson();

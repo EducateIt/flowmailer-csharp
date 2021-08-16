@@ -23,13 +23,13 @@ namespace Flowmailer.ConsoleApp
 
             var client = new FlowmailerClient(clientId, clientSecret, accountId);
 
-            var message = new Message
+            var message = new SubmitMessage
             {
                 Data = new Dictionary<string, string> { { "var1", "value3 "} },
                 HeaderFromAddress = fromAddress,
                 HeaderFromName = fromName,
                 HeaderToName = "Fredrik Olsson",
-                MessageType = Message.MessageTypes.EMAIL,
+                MessageType = MessageTypes.EMAIL,
                 RecipientAddress = "fr3gu77@gmail.com",
                 SenderAddress = senderAddress,
                 Subject = "A test email sent via Flowmailer API",
