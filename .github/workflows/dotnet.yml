@@ -46,8 +46,8 @@ jobs:
         iv: ${{ env.GitVersion_FullSemVer }}
         sha: ${{ env.GitVersion_ShortSha }}
     - name: Publish to NuGet
-        # Only publish releases or betas to nuget, don't publish from main branch
-      if: (env.GitVersion_PreReleaseTag == '' || env.GitVersion_PreReleaseTag == 'beta') # && github.ref != 'refs/heads/main'
+        # Only publish releases or betas to nuget, only publish from main branch
+      if: (env.GitVersion_PreReleaseTag == '' || env.GitVersion_PreReleaseTag == 'beta') && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev')
       env:
         NUGET_API_KEY: ${{secrets.NUGET_API_KEY}}
       #run: echo "PUBLISHING TO NUGET - $GitVersion_InformationalVersion"
