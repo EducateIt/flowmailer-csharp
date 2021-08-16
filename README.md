@@ -4,6 +4,8 @@ C# client library and examples for using Flowmailer API's to send mail and acces
 
 ## Get started
 
+API documentation: https://flowmailer.com/apidoc/flowmailer-api
+
 ```C#
 var client = new FlowmailerClient(clientId, clientSecret, accountId);
 

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Net;
 using System.Threading.Tasks;
+using Flowmailer.Helpers.Errors.Models;
 using Flowmailer.Models;
 using Newtonsoft.Json;
 using RestSharp;
@@ -25,6 +27,10 @@ namespace Flowmailer
         /// <param name="accountId"></param>
         public FlowmailerClient(string clientId, string clientSecret, string accountId)
         {
+            if (string.IsNullOrWhiteSpace(clientId)) throw new ArgumentNullException(nameof(clientId));
+            if (string.IsNullOrWhiteSpace(clientSecret)) throw new ArgumentNullException(nameof(clientSecret));
+            if (string.IsNullOrWhiteSpace(accountId)) throw new ArgumentNullException(nameof(accountId));
+
             _clientId = clientId;
             _clientSecret = clientSecret;
             _accountId = accountId;
@@ -35,24 +41,45 @@ namespace Flowmailer
         private void GetAccessToken()
         {
             var restClient = new RestClient("https://login.flowmailer.net");
-            // restClient.Proxy = new WebProxy("127.0.0.1:8888");
             var request = new RestRequest("oauth/token", Method.POST);
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-            request.AddParameter("client_id", _clientId);
+            request.AddParameter("client_id", $"{_clientId}43");
             request.AddParameter("client_secret", _clientSecret);
             request.AddParameter("grant_type", "client_credentials");
             request.AddParameter("scope", "api");
 
-            IRestResponse authResult;
+            IRestResponse authResult = null;
 
             try
             {
                 authResult = restClient.Execute(request);
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Console.WriteLine(e);
-                throw;
+                if (authResult == null)
+                {
+                    throw;
+                }
+
+                switch (authResult.StatusCode)
+                {
+                    case HttpStatusCode.Unauthorized:
+                        throw new UnauthorizedException();
+                    case HttpStatusCode.BadRequest:
+                        break;
+                    case HttpStatusCode.Forbidden:
+                        break;
+                    case HttpStatusCode.InternalServerError:
+                        break;
+                    case HttpStatusCode.NotFound:
+                        break;
+                    case HttpStatusCode.ServiceUnavailable:
+                        break;
+                    case HttpStatusCode.UnsupportedMediaType:
+                        break;
+                    default:
+                        throw;
+                }
             }
 
             var content = authResult.Content;
@@ -74,6 +101,8 @@ namespace Flowmailer
         /// <param name="message"></param>
         public async Task SendMessage(SubmitMessage message)
         {
+            GetAccessToken();
+
             var restClient = new RestClient($"https://api.flowmailer.net/{_accountId}");
             restClient.UseNewtonsoftJson();
             var request = new RestRequest("messages/submit", Method.POST);
