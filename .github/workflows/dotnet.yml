@@ -1,0 +1,54 @@
+name: .NET
+
+on:
+  push:
+    branches:
+      - 'main'
+      - 'release/**'
+      - 'dev'
+      - 'hotfix/**'
+      - 'feature/**'
+  pull_request:
+    branches:
+      - 'main'
+      - 'release/**'
+      - 'dev'
+      - 'hotfix/**'
+      - 'feature/**'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Fetch for GitVersion
+      run: git fetch --unshallow
+    - name: Get Git Version
+      uses: docker://gittools/gitversion:latest
+      with:
+        args: /output buildserver
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
+    - name: Pack
+      run: dotnet pack --configuration Release -p:PackageVersion=$pv -p:AssemblyVersion=$av -p:FileVersion=$fv '-p:InformationalVersion=$iv-$sha' -o "./packages"
+      env:
+        pv: ${{ env.GitVersion_NuGetVersionV2 }}
+        av: ${{ env.GitVersion_AssemblySemVer }}
+        fv: ${{ env.GitVersion_AssemblySemFileVer }}
+        iv: ${{ env.GitVersion_FullSemVer }}
+        sha: ${{ env.GitVersion_ShortSha }}
+    - name: Publish to NuGet
+        # Only publish releases or betas to nuget, don't publish from main branch
+      if: (env.GitVersion_PreReleaseTag == '' || env.GitVersion_PreReleaseTag == 'beta') # && github.ref != 'refs/heads/main'
+      env:
+        NUGET_API_KEY: ${{secrets.NUGET_API_KEY}}
+      #run: echo "PUBLISHING TO NUGET - $GitVersion_InformationalVersion"
+      run: dotnet nuget push -s https://www.nuget.org/api/v2/package -k $NUGET_API_KEY ./packages/*.nupkg

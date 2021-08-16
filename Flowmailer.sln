@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31410.357
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Flowmailer", "src\lib\Flowmailer\Flowmailer.csproj", "{E8DB8436-A1AB-455C-9E71-63F0952D9428}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flowmailer.ConsoleApp", "examples\Flowmailer.Console\Flowmailer.ConsoleApp.csproj", "{F1DD53A9-4F12-4215-94D7-76A30C78CC48}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E8DB8436-A1AB-455C-9E71-63F0952D9428}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8DB8436-A1AB-455C-9E71-63F0952D9428}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8DB8436-A1AB-455C-9E71-63F0952D9428}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8DB8436-A1AB-455C-9E71-63F0952D9428}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1DD53A9-4F12-4215-94D7-76A30C78CC48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1DD53A9-4F12-4215-94D7-76A30C78CC48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1DD53A9-4F12-4215-94D7-76A30C78CC48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1DD53A9-4F12-4215-94D7-76A30C78CC48}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3C8E46F8-D1D5-4156-9317-7E01735FB2B5}
+	EndGlobalSection
+EndGlobal
