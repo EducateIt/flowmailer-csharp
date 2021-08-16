@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.31410.357
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Flowmailer", "src\lib\Flowmailer\Flowmailer.csproj", "{E8DB8436-A1AB-455C-9E71-63F0952D9428}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flowmailer.ConsoleApp", "examples\Flowmailer.Console\Flowmailer.ConsoleApp.csproj", "{F1DD53A9-4F12-4215-94D7-76A30C78CC48}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Flowmailer.ConsoleApp", "examples\Flowmailer.Console\Flowmailer.ConsoleApp.csproj", "{F1DD53A9-4F12-4215-94D7-76A30C78CC48}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flowmailer.Test", "src\tests\Flowmailer.Test\Flowmailer.Test.csproj", "{3F91C788-E491-42AE-BBFA-8187858530AF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{F1DD53A9-4F12-4215-94D7-76A30C78CC48}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F1DD53A9-4F12-4215-94D7-76A30C78CC48}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F1DD53A9-4F12-4215-94D7-76A30C78CC48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F91C788-E491-42AE-BBFA-8187858530AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F91C788-E491-42AE-BBFA-8187858530AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F91C788-E491-42AE-BBFA-8187858530AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F91C788-E491-42AE-BBFA-8187858530AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
