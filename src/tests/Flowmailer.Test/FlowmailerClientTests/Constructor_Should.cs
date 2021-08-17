@@ -6,9 +6,11 @@ namespace Flowmailer.Test.FlowmailerClientTests
     public class Constructor_Should
     {
         [Test]
-        public void Throw_GivenNullClientId()
+        public void Throw_GivenNullCredentialsId()
         {
-            Assert.That(() => new FlowmailerClient("asdasdasd", "sdfsdfsdfsdfsfsd", "1234"), Throws.ArgumentNullException);
+            Assert.That(() => new FlowmailerClient("", "sdfsdfsdfsdfsfsd", "1234"), Throws.ArgumentNullException);
+            Assert.That(() => new FlowmailerClient("sdfsdfsdfsdfsfsd", " ", "1234"), Throws.ArgumentNullException);
+            Assert.That(() => new FlowmailerClient("sdfsdfsdfsdfsfsd", "sdfsdfsdfsdfsfsd", null), Throws.ArgumentNullException);
         }
     }
 }
