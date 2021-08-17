@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
+using Flowmailer.Helpers.Errors;
 using Flowmailer.Helpers.Errors.Models;
 using Flowmailer.Models;
 using Newtonsoft.Json;
@@ -34,8 +35,6 @@ namespace Flowmailer
             _clientId = clientId;
             _clientSecret = clientSecret;
             _accountId = accountId;
-
-            GetAccessToken();
         }
 
         private void GetAccessToken()
@@ -43,7 +42,7 @@ namespace Flowmailer
             var restClient = new RestClient("https://login.flowmailer.net");
             var request = new RestRequest("oauth/token", Method.POST);
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-            request.AddParameter("client_id", $"{_clientId}43");
+            request.AddParameter("client_id", $"{_clientId}");
             request.AddParameter("client_secret", _clientSecret);
             request.AddParameter("grant_type", "client_credentials");
             request.AddParameter("scope", "api");
@@ -54,32 +53,14 @@ namespace Flowmailer
             {
                 authResult = restClient.Execute(request);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 if (authResult == null)
                 {
                     throw;
                 }
 
-                switch (authResult.StatusCode)
-                {
-                    case HttpStatusCode.Unauthorized:
-                        throw new UnauthorizedException();
-                    case HttpStatusCode.BadRequest:
-                        break;
-                    case HttpStatusCode.Forbidden:
-                        break;
-                    case HttpStatusCode.InternalServerError:
-                        break;
-                    case HttpStatusCode.NotFound:
-                        break;
-                    case HttpStatusCode.ServiceUnavailable:
-                        break;
-                    case HttpStatusCode.UnsupportedMediaType:
-                        break;
-                    default:
-                        throw;
-                }
+                ErrorHandler.ThrowException(authResult, e);
             }
 
             var content = authResult.Content;
@@ -112,7 +93,7 @@ namespace Flowmailer
             request.AddHeader("Accept", "application/vnd.flowmailer.v1.11+json");
             request.AddJsonBody(message);
 
-            IRestResponse authResult;
+            IRestResponse authResult = null;
 
             try
             {
@@ -120,8 +101,12 @@ namespace Flowmailer
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                throw;
+                if (authResult == null)
+                {
+                    throw;
+                }
+
+                ErrorHandler.ThrowException(authResult, e);
             }
 
             var content = authResult.Content;
