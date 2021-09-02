@@ -7,7 +7,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Flowmailer", "src\lib\Flowm
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Flowmailer.ConsoleApp", "examples\Flowmailer.Console\Flowmailer.ConsoleApp.csproj", "{F1DD53A9-4F12-4215-94D7-76A30C78CC48}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flowmailer.Test", "src\tests\Flowmailer.Test\Flowmailer.Test.csproj", "{3F91C788-E491-42AE-BBFA-8187858530AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Flowmailer.Test", "src\tests\Flowmailer.Test\Flowmailer.Test.csproj", "{3F91C788-E491-42AE-BBFA-8187858530AF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{65581FAA-98D5-4452-B150-3C3DF819F818}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		GitVersion.yml = GitVersion.yml
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
