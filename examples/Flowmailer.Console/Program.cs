@@ -36,7 +36,9 @@ namespace Flowmailer.ConsoleApp
                 Html = "<html><head><title>A test email</title></head><body>This is a test!</body></html>"
             };
 
-            await client.SendMessage(message);
+            var result = await client.SendMessageAsync(message);
+
+            Console.WriteLine(result);
 
             Console.WriteLine();
             Console.Write("Press ENTER to exit...");

@@ -19,8 +19,8 @@ var message = new SubmitMessage
     RecipientAddress = "fr3gu77@gmail.com",
     SenderAddress = senderAddress,
     Subject = "A test email sent via Flowmailer API",
-    Html = "<html></head><title>A test email</title></head><body>This is a test!</body></html>"
+    Html = "<html><head><title>A test email</title></head><body>This is a test!</body></html>"
 };
 
-await client.SendMessage(message);
+await client.SendMessageAsync(message);
 ```
