@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Flowmailer.Helpers.Errors;
-using Flowmailer.Helpers.Errors.Models;
 using Flowmailer.Models;
 using Newtonsoft.Json;
 using RestSharp;
@@ -35,13 +36,36 @@ namespace Flowmailer
             _clientId = clientId;
             _clientSecret = clientSecret;
             _accountId = accountId;
+
+            _accessToken = GetAccessToken().AccessToken;
         }
 
-        private void GetAccessToken()
+        /// <summary>
+        /// Sends a message.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns>MessageId as <see cref="string"/></returns>
+        public async Task<string> SendMessageAsync(SubmitMessage message)
+        {
+            return await DoRequestAsync(SendMessageDoAsync(message));
+        }
+
+        ///// <summary>
+        ///// Gets message events.
+        ///// </summary>
+        ///// <param name="message"></param>
+        //public async Task GetMessageEvents(SubmitMessage message)
+        //{
+        //    var sendMessageDo = SendMessageDoAsync(message);
+        //    await DoRequestAsync(sendMessageDo);
+        //}
+
+        private OAuthTokenResponse GetAccessToken()
         {
             var restClient = new RestClient("https://login.flowmailer.net");
-            var request = new RestRequest("oauth/token", Method.POST);
+            var request = new RestRequest("oauth/token");
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            request.AddHeader("Accept", "application/json");
             request.AddParameter("client_id", $"{_clientId}");
             request.AddParameter("client_secret", _clientSecret);
             request.AddParameter("grant_type", "client_credentials");
@@ -51,7 +75,7 @@ namespace Flowmailer
 
             try
             {
-                authResult = restClient.Execute(request);
+                authResult = restClient.Post(request);
             }
             catch (Exception e)
             {
@@ -63,54 +87,126 @@ namespace Flowmailer
                 ErrorHandler.ThrowException(authResult, e);
             }
 
-            var content = authResult.Content;
+            if (authResult.IsSuccessful)
+            {
+                return JsonConvert.DeserializeObject<OAuthTokenResponse>(authResult.Content);
+            }
+
+            ErrorHandler.ThrowException(authResult, authResult.ErrorException);
+
+            return null;
+        }
+
+        private async Task<string> DoRequestAsync(Task<IRestResponse> func)
+        {
+            IRestResponse responseResult = null;
             try
             {
-                _accessToken = JsonConvert.DeserializeAnonymousType(content, new { access_token = "", expires_in = 0, token_type = "", scope = "" })?.access_token ?? "";
+                var keepTrying = true;
+                var counter = 0;
+
+                while (keepTrying && counter < 10)
+                {
+                    responseResult = await func;
+
+                    if (responseResult.IsSuccessful)
+                    {
+                        break;
+                    }
+
+                    switch (responseResult.StatusCode)
+                    {
+                        case HttpStatusCode.Unauthorized:
+                            var error = JsonConvert.DeserializeObject<OAuthErrorResponse>(responseResult.Content);
+                            if ((error?.Error ?? "") == "invalid_token")
+                            {
+                                _accessToken = GetAccessToken().AccessToken;
+                                continue;
+                            }
+
+                            ErrorHandler.ThrowException(responseResult, responseResult.ErrorException);
+                            break;
+                        default:
+                            keepTrying = false;
+                            ErrorHandler.ThrowException(responseResult, responseResult.ErrorException);
+                            break;
+                    }
+
+                    counter++;
+                }
+
+                var locationUri = responseResult?.Headers?.FirstOrDefault(h => h.Name == "Location")?.Value?.ToString() ?? "";
+                if (string.IsNullOrEmpty(locationUri))
+                {
+                    return string.Empty;
+                }
+
+                var messageId = locationUri.Substring(locationUri.LastIndexOf("/", StringComparison.Ordinal) + 1);
+                return messageId;
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                throw;
+                if (responseResult == null)
+                {
+                    throw;
+                }
+
+                ErrorHandler.ThrowException(responseResult, e);
+
+                return string.Empty;
             }
         }
 
-
-        /// <summary>
-        /// Sends a message.
-        /// </summary>
-        /// <param name="message"></param>
-        public async Task SendMessage(SubmitMessage message)
+        private async Task<IRestResponse> SendMessageDoAsync(SubmitMessage message)
         {
-            GetAccessToken();
+            var restClient = CreateRequest(out var request);
+            request.AddJsonBody(message);
 
+            return await restClient.ExecuteAsync(request);
+        }
+
+        private IRestResponse SendMessageDo(SubmitMessage message)
+        {
+            var restClient = CreateRequest(out var request);
+            request.AddJsonBody(message);
+
+            return restClient.Execute(request);
+        }
+
+        //private async Task<IRestResponse> GetMessageEventsDo(SubmitMessage message, int numberOfItems = 0)
+        //{
+        //    var restClient = CreateRequest(out var request);
+
+        //    request.AddJsonBody(message);
+        //    request.AddHeader("Range", $"items=:{numberOfItems}");
+
+
+        //    var response = await restClient.ExecuteAsync(request);
+        //    if (response.IsSuccessful)
+        //    {
+        //        var responseData = JsonConvert.DeserializeObject<List<MessageEvent>>(response.Content);
+        //        if (responseData.Count >= 100)
+        //        {
+
+        //        }
+        //    }
+
+        //    var range = response.Headers.FirstOrDefault(h => h.Name == "Content-Range");
+
+
+
+        //    return response;
+        //}
+
+        private RestClient CreateRequest(out RestRequest request)
+        {
             var restClient = new RestClient($"https://api.flowmailer.net/{_accountId}");
             restClient.UseNewtonsoftJson();
-            var request = new RestRequest("messages/submit", Method.POST);
-            // restClient.Proxy = new WebProxy("127.0.0.1:8888");
+            request = new RestRequest("messages/submit", Method.POST);
             request.AddHeader("Authorization", $"Bearer {_accessToken}");
             request.AddHeader("Content-Type", "application/vnd.flowmailer.v1.11+json");
             request.AddHeader("Accept", "application/vnd.flowmailer.v1.11+json");
-            request.AddJsonBody(message);
-
-            IRestResponse authResult = null;
-
-            try
-            {
-                authResult = await restClient.ExecuteAsync(request);
-            }
-            catch (Exception e)
-            {
-                if (authResult == null)
-                {
-                    throw;
-                }
-
-                ErrorHandler.ThrowException(authResult, e);
-            }
-
-            var content = authResult.Content;
-            Console.WriteLine(content);
+            return restClient;
         }
     }
 }
