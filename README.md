@@ -1,5 +1,7 @@
 # flowmailer-csharp
 
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/EducateIt/flowmailer-csharp/.NET) ![Nuget](https://img.shields.io/nuget/dt/EducateIt.Flowmailer)
+
 C# client library and examples for using Flowmailer API's to send mail and access API endpoints with .NET 4.5.2, .NET Standard 2 and .NET Core support.
 
 ## Get started
