@@ -37,6 +37,8 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --configuration Release --no-restore
+    - name: Test
+      run: dotnet test --no-restore
     - name: Pack
       run: dotnet pack --configuration Release -p:PackageVersion=$pv -p:AssemblyVersion=$av -p:FileVersion=$fv '-p:InformationalVersion=$iv-$sha' -o "./packages"
       env:
