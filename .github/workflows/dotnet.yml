@@ -38,7 +38,11 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release --no-restore
     - name: Test
+      env:
+        CODECOV_TOKEN: $CODECOV_KEY
       run: dotnet test --no-restore
+    - name: Codecov
+      uses: codecov/codecov-action@v2.0.3
     - name: Pack
       run: dotnet pack --configuration Release -p:PackageVersion=$pv -p:AssemblyVersion=$av -p:FileVersion=$fv '-p:InformationalVersion=$iv-$sha' -o "./packages"
       env:
