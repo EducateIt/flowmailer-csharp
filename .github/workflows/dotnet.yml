@@ -54,7 +54,7 @@ jobs:
     #    testProject: ./src/tests/Flowmailer.Test/Flowmailer.Test.csproj
     - name: Codecov
       env:
-        CODECOV_TOKEN: $CODECOV_KEY
+        CODECOV_TOKEN: ${{secrets.CODECOV_KEY}}
       uses: codecov/codecov-action@v2.0.3
       with:
         directory: ./coverage
