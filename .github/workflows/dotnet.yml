@@ -37,8 +37,8 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --configuration Release --no-restore
-    - name: Test      
-      run: dotnet test --no-restore
+    - name: Test
+      run: dotnet test --no-restore --collect:"XPlat Code Coverage" --results-directory:coverage -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=lcov
     #- name: Coverlet coverage test
     #  # You may pin to the exact commit or the version.
     #  # uses: b3b00/coverlet-action@ea67400f084993d98cfb3e2ec5948197d80a7d4e
@@ -52,12 +52,12 @@ jobs:
     #    #excludes: # optional
     #    # path to unit test project from repository root
     #    testProject: ./src/tests/Flowmailer.Test/Flowmailer.Test.csproj
-    #- name: Codecov
-    #  env:
-    #    CODECOV_TOKEN: $CODECOV_KEY
-    #  uses: codecov/codecov-action@v2.0.3
-    #  with:
-    #    directory: ./src/tests/Flowmailer.Test/Flowmailer.Test/coverage
+    - name: Codecov
+      env:
+        CODECOV_TOKEN: $CODECOV_KEY
+      uses: codecov/codecov-action@v2.0.3
+      with:
+        directory: ./coverage
     - name: Pack
       run: dotnet pack --configuration Release -p:PackageVersion=$pv -p:AssemblyVersion=$av -p:FileVersion=$fv '-p:InformationalVersion=$iv-$sha' -o "./packages"
       env:
