@@ -39,25 +39,25 @@ jobs:
       run: dotnet build --configuration Release --no-restore
     - name: Test      
       run: dotnet test --no-restore
-    - name: Coverlet coverage test
-      # You may pin to the exact commit or the version.
-      # uses: b3b00/coverlet-action@ea67400f084993d98cfb3e2ec5948197d80a7d4e
-      uses: b3b00/coverlet-action@1.1.1
-      with:
-        # output filename
-        output: coverage/lcov.info # default is ./lcov.info
-        # output format : lcov, json, opencover, corbertura, temacity (see coverlet documentation)
-        #outputFormat: # default is lcov
-        # assemblies, namespances exclusions (see coverlet documentation)
-        #excludes: # optional
-        # path to unit test project from repository root
-        testProject: ./src/tests/Flowmailer.Test/Flowmailer.Test.csproj
-    - name: Codecov
-      env:
-        CODECOV_TOKEN: $CODECOV_KEY
-      uses: codecov/codecov-action@v2.0.3
-      with:
-        directory: ./src/tests/Flowmailer.Test/Flowmailer.Test/coverage
+    #- name: Coverlet coverage test
+    #  # You may pin to the exact commit or the version.
+    #  # uses: b3b00/coverlet-action@ea67400f084993d98cfb3e2ec5948197d80a7d4e
+    #  uses: b3b00/coverlet-action@1.1.1
+    #  with:
+    #    # output filename
+    #    output: coverage/lcov.info # default is ./lcov.info
+    #    # output format : lcov, json, opencover, corbertura, temacity (see coverlet documentation)
+    #    #outputFormat: # default is lcov
+    #    # assemblies, namespances exclusions (see coverlet documentation)
+    #    #excludes: # optional
+    #    # path to unit test project from repository root
+    #    testProject: ./src/tests/Flowmailer.Test/Flowmailer.Test.csproj
+    #- name: Codecov
+    #  env:
+    #    CODECOV_TOKEN: $CODECOV_KEY
+    #  uses: codecov/codecov-action@v2.0.3
+    #  with:
+    #    directory: ./src/tests/Flowmailer.Test/Flowmailer.Test/coverage
     - name: Pack
       run: dotnet pack --configuration Release -p:PackageVersion=$pv -p:AssemblyVersion=$av -p:FileVersion=$fv '-p:InformationalVersion=$iv-$sha' -o "./packages"
       env:
