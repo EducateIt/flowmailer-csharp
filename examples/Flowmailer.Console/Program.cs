@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using DotNetEnv;
 using Flowmailer.Models;
@@ -10,8 +11,6 @@ namespace Flowmailer.ConsoleApp
     {
         public static async Task Main()
         {
-            Console.WriteLine("Hello World!");
-
             Env.TraversePath().Load();
 
             var clientId = Env.GetString("FLOWMAILER_API_CLIENTID");
@@ -38,13 +37,23 @@ namespace Flowmailer.ConsoleApp
 
             //var result = await client.SendMessageAsync(message);
 
-            var from = DateTime.Parse("2020-09-09 18:06:58Z").ToUniversalTime();
-            var to = DateTime.Parse("2021-10-20 12:52:23Z").ToUniversalTime();
-            var res = await client.GetMessageEventsAsync(from, to);
+            //var from = DateTime.Parse("2020-09-09 18:06:58Z").ToUniversalTime();
+            //var to = DateTime.Parse("2021-10-20 12:52:23Z").ToUniversalTime();
+            //var messageEvents = await client.GetMessageEventsAsync(from, to);
 
-            foreach (var messageEvent in res)
+            //foreach (var messageEvent in messageEvents)
+            //{
+            //    Console.WriteLine($"MessageEventId: {messageEvent.Id}, MessageId: {messageEvent.MessageId}, type: {messageEvent.Type}");
+            //}
+
+            //Console.WriteLine("**************************");
+
+            var message = await client.GetMessageAsync("20210816140624a31c008a1a1ea33e83");
+            Console.WriteLine($"Message ID: {message.Id}. Number of events: {message.Events.Length}");
+            foreach (var messageEvent in message.Events.OrderByDescending(e => e.Received))
             {
-                Console.WriteLine($"MessageId: {messageEvent.id}, type: {messageEvent.type}");
+                Console.WriteLine($"{messageEvent.Received:yyyy-MM-dd kl. HH:mm:ss} :: {messageEvent.Type}");
+                Console.WriteLine();
             }
 
             Console.WriteLine();

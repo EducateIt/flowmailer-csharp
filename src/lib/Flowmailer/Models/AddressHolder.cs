@@ -5,11 +5,11 @@ using Newtonsoft.Json;
 namespace Flowmailer.Models
 {
     [PublicAPI]
-    public class Header
+    public class AddressHolder
     {
         [JsonProperty("name")]
         public string Name { get; set; }
-        [JsonProperty("value")]
-        public string Value { get; set; }
+        [JsonProperty("address")]
+        public string Address { get; set; }
     }
 }

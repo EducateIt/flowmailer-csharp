@@ -1,10 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using JetBrains.Annotations;
+using Newtonsoft.Json;
 
 namespace Flowmailer.Models
 {
     /// <summary>
     /// OAuth response holder
     /// </summary>
+    [PublicAPI]
     public class OAuthTokenResponse
     {
 

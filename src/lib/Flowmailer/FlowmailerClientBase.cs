@@ -96,7 +96,7 @@ namespace Flowmailer
 
         private IRestClient GetRestClient(string baseUrl)
         {
-            return _restClientFactory(baseUrl) ?? new RestClient(baseUrl);
+            return _restClientFactory == null ? new RestClient(baseUrl) : _restClientFactory(baseUrl);
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace Flowmailer
         /// <returns>The IRestResponse result</returns>
         protected Task<IRestResponse> DoRequestAsync(IRestRequest request)
         {
-            return DoRequestAsync(request, r => r);
+            return DoRequestAsync(request, response => response);
         }
 
         /// <summary>

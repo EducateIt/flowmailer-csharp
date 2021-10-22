@@ -4,7 +4,9 @@ using System.Linq;
 using System.Net;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using Flowmailer.Helpers.Errors.Models;
 using Flowmailer.Models;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 using RestSharp;
 
@@ -22,6 +24,7 @@ namespace Flowmailer
         /// <param name="clientSecret"></param>
         /// <param name="accountId"></param>
         /// <exception cref="FlowmailerClientConstructionException"></exception>
+        [PublicAPI]
         public FlowmailerClient(string clientId, string clientSecret, string accountId) : base(clientId, clientSecret, accountId)
         {
         }
@@ -31,6 +34,7 @@ namespace Flowmailer
         /// </summary>
         /// <param name="message"></param>
         /// <returns>MessageId as <see cref="string"/></returns>
+        [PublicAPI]
         public async Task<string> SendMessageAsync(SubmitMessage message)
         {
             return await DoRequestAsync(CreateSendMessageRequest(message), GetMessageId);
@@ -41,6 +45,7 @@ namespace Flowmailer
         /// </summary>
         /// <param name="message"></param>
         /// <returns>MessageId as <see cref="string"/></returns>
+        [PublicAPI]
         public string SendMessage(SubmitMessage message)
         {
             return DoRequest(CreateSendMessageRequest(message), GetMessageId);
@@ -51,9 +56,24 @@ namespace Flowmailer
         /// </summary>
         /// <param name="from"></param>
         /// <param name="to"></param>
+        [PublicAPI]
         public async Task<List<MessageEvent>> GetMessageEventsAsync(DateTime from, DateTime to)
         {
             return await GetMessageEventsDoAsync(from, to);
+        }
+
+        public async Task<Message> GetMessageAsync(string messageId)
+        {
+            if (string.IsNullOrEmpty(messageId))
+            {
+                throw new ArgumentNullException(nameof(messageId));
+            }
+
+            var request = CreateRequest(Method.GET, $"messages/{messageId}");
+
+            var response = await DoRequestAsync(request);
+
+            return JsonConvert.DeserializeObject<Message>(response.Content);
         }
 
         private IRestRequest CreateSendMessageRequest(SubmitMessage message)
