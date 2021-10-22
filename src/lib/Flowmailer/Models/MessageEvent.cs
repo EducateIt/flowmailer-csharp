@@ -1,41 +1,52 @@
 ﻿using System;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
+#pragma warning disable 1591
 
 namespace Flowmailer.Models
 {
-    /// <summary>
-    /// Holder for Message event data
-    /// </summary>
+    [PublicAPI]
     public class MessageEvent
     {
-        /// <summary>
-        /// base64-encoded data
-        /// </summary>
         [JsonProperty("data")]
         public string Data { get; set; }
-
-        /// <summary>
-        /// Message event ID
-        /// </summary>
         [JsonProperty("id")]
-        public string id { get; set; }
-        public string messageId { get; set; }
-        public string type { get; set; }
-        public DateTime received { get; set; }
-        public DateTime inserted { get; set; }
-        public string snippet { get; set; }
-        public string mta { get; set; }
-        public string referer { get; set; }
-        public string remoteAddr { get; set; }
-        public string userAgentString { get; set; }
-        public string deviceCategory { get; set; }
-        public string userAgent { get; set; }
-        public string userAgentType { get; set; }
-        public string userAgentVersion { get; set; }
-        public string userAgentDisplayName { get; set; }
-        public string operatingSystem { get; set; }
-        public string operatingSystemVersion { get; set; }
-        public string linkTarget { get; set; }
-        public string linkName { get; set; }
+        public string Id { get; set; }
+        [JsonProperty("messageId")]
+        public string MessageId { get; set; }
+        [JsonProperty("type")]
+        public string Type { get; set; }
+        [JsonProperty("received")]
+        public DateTime Received { get; set; }
+        [JsonProperty("inserted")]
+        public DateTime Inserted { get; set; }
+        [JsonProperty("snippet")]
+        public string Snippet { get; set; }
+        [JsonProperty("mta")]
+        public string Mta { get; set; }
+        [JsonProperty("referer")]
+        public string Referer { get; set; }
+        [JsonProperty("remoteAddr")]
+        public string RemoteAddr { get; set; }
+        [JsonProperty("userAgentString")]
+        public string UserAgentString { get; set; }
+        [JsonProperty("deviceCategory")]
+        public string DeviceCategory { get; set; }
+        [JsonProperty("userAgent")]
+        public string UserAgent { get; set; }
+        [JsonProperty("userAgentType")]
+        public string UserAgentType { get; set; }
+        [JsonProperty("userAgentVersion")]
+        public string UserAgentVersion { get; set; }
+        [JsonProperty("userAgentDisplayName")]
+        public string UserAgentDisplayName { get; set; }
+        [JsonProperty("operatingSystem")]
+        public string OperatingSystem { get; set; }
+        [JsonProperty("operatingSystemVersion")]
+        public string OperatingSystemVersion { get; set; }
+        [JsonProperty("linkTarget")]
+        public string LinkTarget { get; set; }
+        [JsonProperty("linkName")]
+        public string LinkName { get; set; }
     }
 }

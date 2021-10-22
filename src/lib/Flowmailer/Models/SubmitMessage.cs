@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
+using JetBrains.Annotations;
 
 namespace Flowmailer.Models
 {
     /// <summary>
     /// SubmitMessage class for Flowmailer API
     /// </summary>
+    [PublicAPI]
     public class SubmitMessage
     {
         /// <summary>

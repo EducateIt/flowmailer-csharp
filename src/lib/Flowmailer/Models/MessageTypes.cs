@@ -1,13 +1,12 @@
-﻿namespace Flowmailer.Models
+﻿using JetBrains.Annotations;
+
+#pragma warning disable 1591
+
+namespace Flowmailer.Models
 {
-    /// <summary>
-    /// Flowmailer message type
-    /// </summary>
+    [PublicAPI]
     public static class MessageTypes
     {
-        /// <summary>
-        /// Message type is EMAIL
-        /// </summary>
         public const string EMAIL = "EMAIL";
     }
 }

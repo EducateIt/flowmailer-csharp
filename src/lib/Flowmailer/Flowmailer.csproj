@@ -39,6 +39,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="JetBrains.Annotations" Version="2021.2.0" />
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" PrivateAssets="All" Condition=" '$(OS)' != 'Windows_NT' " />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
