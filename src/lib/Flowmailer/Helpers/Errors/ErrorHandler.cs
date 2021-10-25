@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Threading.Tasks;
 using Flowmailer.Helpers.Errors.Models;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using RestSharp;
 
 namespace Flowmailer.Helpers.Errors
