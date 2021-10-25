@@ -1,21 +1,51 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using Flowmailer.Helpers.Errors.Models;
 using Flowmailer.Models;
-using JetBrains.Annotations;
 using Newtonsoft.Json;
 using RestSharp;
 
 namespace Flowmailer
 {
     /// <summary>
+    /// Contract for the FlowmailerClient
+    /// </summary>
+    public interface IFlowmailerClient
+    {
+        /// <summary>
+        /// Sends a message.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns>MessageId as <see cref="string"/></returns>
+        Task<string> SendMessageAsync(SubmitMessage message);
+
+        /// <summary>
+        /// Sends a message.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns>MessageId as <see cref="string"/></returns>
+        string SendMessage(SubmitMessage message);
+
+        /// <summary>
+        /// Gets message events.
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        Task<List<MessageEvent>> GetMessageEventsAsync(DateTime from, DateTime to);
+
+        /// <summary>
+        /// Gets a message by ID
+        /// </summary>
+        /// <param name="messageId"></param>
+        /// <returns></returns>
+        Task<Message> GetMessageAsync(string messageId);
+    }
+
+    /// <summary>
     /// The Flowmailer Client responsible for issuing requests to the Flowmailer API.
     /// </summary>
-    public sealed class FlowmailerClient : FlowmailerClientBase
+    public sealed class FlowmailerClient : FlowmailerClientBase, IFlowmailerClient
     {
         /// <summary>
         /// Instantiates the Flowmailer API client.
@@ -24,7 +54,6 @@ namespace Flowmailer
         /// <param name="clientSecret"></param>
         /// <param name="accountId"></param>
         /// <exception cref="FlowmailerClientConstructionException"></exception>
-        [PublicAPI]
         public FlowmailerClient(string clientId, string clientSecret, string accountId) : base(clientId, clientSecret, accountId)
         {
         }
@@ -34,7 +63,6 @@ namespace Flowmailer
         /// </summary>
         /// <param name="message"></param>
         /// <returns>MessageId as <see cref="string"/></returns>
-        [PublicAPI]
         public async Task<string> SendMessageAsync(SubmitMessage message)
         {
             return await DoRequestAsync(CreateSendMessageRequest(message), GetMessageId);
@@ -45,7 +73,6 @@ namespace Flowmailer
         /// </summary>
         /// <param name="message"></param>
         /// <returns>MessageId as <see cref="string"/></returns>
-        [PublicAPI]
         public string SendMessage(SubmitMessage message)
         {
             return DoRequest(CreateSendMessageRequest(message), GetMessageId);
@@ -56,12 +83,17 @@ namespace Flowmailer
         /// </summary>
         /// <param name="from"></param>
         /// <param name="to"></param>
-        [PublicAPI]
         public async Task<List<MessageEvent>> GetMessageEventsAsync(DateTime from, DateTime to)
         {
             return await GetMessageEventsDoAsync(from, to);
         }
 
+        /// <summary>
+        /// Gets a message by ID
+        /// </summary>
+        /// <param name="messageId"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public async Task<Message> GetMessageAsync(string messageId)
         {
             if (string.IsNullOrEmpty(messageId))
@@ -89,7 +121,7 @@ namespace Flowmailer
         {
             var result = new List<MessageEvent>();
 
-            var dateRangeMatrix = $";receivedrange={To8601(from)},{To8601(to)}";
+            var dateRangeMatrix = $";receivedrange={MiscHelpers.To8601(from)},{MiscHelpers.To8601(to)}";
 
             await MessageEventsDo(numberOfItems, dateRangeMatrix, result);
 
@@ -165,8 +197,19 @@ namespace Flowmailer
 
             return true;
         }
+    }
 
-        private string To8601(DateTime dateTime)
+    /// <summary>
+    /// Some helper functions
+    /// </summary>
+    public class MiscHelpers
+    {
+        /// <summary>
+        /// Formats a datetime to a ISO8601 string
+        /// </summary>
+        /// <param name="dateTime"></param>
+        /// <returns>A ISO8601 formatted datetime string</returns>
+        public static string To8601(DateTime dateTime)
         {
             return dateTime.ToString("yyyy-MM-ddTHH:mm:ssZ");
         }

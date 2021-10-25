@@ -1,10 +1,8 @@
-﻿using JetBrains.Annotations;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 #pragma warning disable 1591
 
 namespace Flowmailer.Models
 {
-    [PublicAPI]
     public class Header
     {
         [JsonProperty("name")]

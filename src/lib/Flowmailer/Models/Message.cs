@@ -1,11 +1,9 @@
 ﻿using System;
-using JetBrains.Annotations;
 using Newtonsoft.Json;
 #pragma warning disable 1591
 
 namespace Flowmailer.Models
 {
-    [PublicAPI]
     public class Message
     {
         [JsonProperty("submitted")]

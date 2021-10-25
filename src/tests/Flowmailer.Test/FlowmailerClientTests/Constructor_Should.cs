@@ -2,7 +2,7 @@
 using System.Net;
 using Flowmailer.Helpers.Errors.Models;
 using Flowmailer.Models;
-using Flowmailer.Test.Fakes;
+using Flowmailer.Test.Core;
 using Moq;
 using Newtonsoft.Json;
 using NUnit.Framework;
