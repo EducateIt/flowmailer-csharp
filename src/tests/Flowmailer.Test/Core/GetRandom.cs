@@ -9,8 +9,6 @@ namespace Flowmailer.Test.Core
     {
         private const double EPSILON = .0000001;
 
-        private static int _nextId = 1000000000;
-
         private static string _stringPrefix = "¿";
 
         public static Random Random { get; set; } = new Random();

@@ -32,26 +32,13 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 5.0.x
+        dotnet-version: 6
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
       run: dotnet build --configuration Release --no-restore
     - name: Test
       run: dotnet test --no-restore --collect:"XPlat Code Coverage" --results-directory:coverage -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=lcov
-    #- name: Coverlet coverage test
-    #  # You may pin to the exact commit or the version.
-    #  # uses: b3b00/coverlet-action@ea67400f084993d98cfb3e2ec5948197d80a7d4e
-    #  uses: b3b00/coverlet-action@1.1.1
-    #  with:
-    #    # output filename
-    #    output: coverage/lcov.info # default is ./lcov.info
-    #    # output format : lcov, json, opencover, corbertura, temacity (see coverlet documentation)
-    #    #outputFormat: # default is lcov
-    #    # assemblies, namespances exclusions (see coverlet documentation)
-    #    #excludes: # optional
-    #    # path to unit test project from repository root
-    #    testProject: ./src/tests/Flowmailer.Test/Flowmailer.Test.csproj
     - name: Codecov
       env:
         CODECOV_TOKEN: ${{secrets.CODECOV_KEY}}
