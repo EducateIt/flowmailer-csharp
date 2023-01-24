@@ -47,5 +47,10 @@ namespace Flowmailer.Models
         /// The raw html message
         /// </summary>
         public string Html { get; set; }
+
+        /// <summary>
+        /// Freely configurable value that can be used to select a flow or one of its variants.
+        /// </summary>
+        public string FlowSelector { get; set; }
     }
 }
