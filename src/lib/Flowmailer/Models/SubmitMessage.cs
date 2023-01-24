@@ -52,5 +52,10 @@ namespace Flowmailer.Models
         /// Freely configurable value that can be used to select a flow or one of its variants.
         /// </summary>
         public string FlowSelector { get; set; }
+
+        /// <summary>
+        /// Text content
+        /// </summary>
+        public string Text { get; set; }
     }
 }
