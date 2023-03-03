@@ -21,6 +21,13 @@ namespace Flowmailer
         Task<string> SendMessageAsync(SubmitMessage message);
 
         /// <summary>
+        /// Simulates sending a message
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        Task<string> SimulateSendMessageAsync(SubmitMessage message);
+
+        /// <summary>
         /// Sends a message.
         /// </summary>
         /// <param name="message"></param>
@@ -69,6 +76,16 @@ namespace Flowmailer
         }
 
         /// <summary>
+        /// Simulates sending a message
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns>MessageId as <see cref="string"/></returns>
+        public async Task<string> SimulateSendMessageAsync(SubmitMessage message)
+        {
+            return await DoRequestAsync(CreateSimulateSendMessageRequest(message), GetMessageId);
+        }
+
+        /// <summary>
         /// Sends a message.
         /// </summary>
         /// <param name="message"></param>
@@ -111,6 +128,15 @@ namespace Flowmailer
         private IRestRequest CreateSendMessageRequest(SubmitMessage message)
         {
             var request = CreateRequest(Method.POST, $"messages/submit");
+
+            request.AddJsonBody(message);
+
+            return request;
+        }
+
+        private IRestRequest CreateSimulateSendMessageRequest(SubmitMessage message)
+        {
+            var request = CreateRequest(Method.POST, $"messages/simulate");
 
             request.AddJsonBody(message);
 
