@@ -71,6 +71,10 @@ namespace Flowmailer.Models
         /// <summary>
         /// Text content
         /// </summary>
-        public string Text { get; set; }        
+        public string Text { get; set; }
+        /// <summary>
+        /// Source Id, required when using simulate message
+        /// </summary>
+        public string SourceId { get; set; }
     }
 }
