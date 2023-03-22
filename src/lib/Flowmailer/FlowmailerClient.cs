@@ -21,13 +21,6 @@ namespace Flowmailer
         Task<string> SendMessageAsync(SubmitMessage message);
 
         /// <summary>
-        /// Simulates sending a message
-        /// </summary>
-        /// <param name="message"></param>
-        /// <returns></returns>
-        Task<string> SimulateSendMessageAsync(SubmitMessage message);
-
-        /// <summary>
         /// Sends a message.
         /// </summary>
         /// <param name="message"></param>
@@ -73,16 +66,6 @@ namespace Flowmailer
         public async Task<string> SendMessageAsync(SubmitMessage message)
         {
             return await DoRequestAsync(CreateSendMessageRequest(message), GetMessageId);
-        }
-
-        /// <summary>
-        /// Simulates sending a message
-        /// </summary>
-        /// <param name="message"></param>
-        /// <returns>MessageId as <see cref="string"/></returns>
-        public async Task<string> SimulateSendMessageAsync(SubmitMessage message)
-        {
-            return await DoRequestAsync(CreateSimulateSendMessageRequest(message), GetMessageId);
         }
 
         /// <summary>
