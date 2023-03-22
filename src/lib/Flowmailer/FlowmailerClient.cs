@@ -117,15 +117,6 @@ namespace Flowmailer
             return request;
         }
 
-        private IRestRequest CreateSimulateSendMessageRequest(SubmitMessage message)
-        {
-            var request = CreateRequest(Method.POST, $"messages/simulate");
-
-            request.AddJsonBody(message);
-
-            return request;
-        }
-
         private async Task<List<MessageEvent>> GetMessageEventsDoAsync(DateTime from, DateTime to, int numberOfItems = 300)
         {
             var result = new List<MessageEvent>();
