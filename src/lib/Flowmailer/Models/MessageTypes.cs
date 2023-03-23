@@ -5,5 +5,7 @@ namespace Flowmailer.Models
     public static class MessageTypes
     {
         public const string EMAIL = "EMAIL";
+
+        public const string SMS = "SMS";
     }
 }
