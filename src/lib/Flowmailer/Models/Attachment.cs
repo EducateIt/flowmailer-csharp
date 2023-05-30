@@ -29,7 +29,7 @@ namespace Flowmailer.Models
         /// Supported values include: attachment, inline and related
         /// The type of disposition, <see cref="DispositionTypes"/>
         /// </summary>
-        public string ContentDisposition { get; set; }
+        public string Disposition { get; set; }
 
         /// <summary>
         /// The filename
