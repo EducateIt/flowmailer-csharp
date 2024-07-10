@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -127,6 +127,7 @@ namespace Flowmailer
 
                 while (keepTrying && counter < 10)
                 {
+                    counter++;
                     responseResult = await restClient.ExecuteAsync(request);
 
                     if (responseResult.IsSuccessful)
@@ -141,6 +142,11 @@ namespace Flowmailer
                             if ((error?.Error ?? "") == "invalid_token")
                             {
                                 _accessToken = GetAccessToken().AccessToken;
+                                foreach (var oldAuthHeader in request.Parameters.Where(p => p.Name.Equals("Authorization", StringComparison.OrdinalIgnoreCase)).ToArray())
+                                {
+                                    request.Parameters.Remove(oldAuthHeader);
+                                }
+                                request.AddHeader("Authorization", $"Bearer {_accessToken}");
                                 continue;
                             }
 
@@ -151,8 +157,6 @@ namespace Flowmailer
                             ErrorHandler.ThrowException(responseResult, responseResult.ErrorException);
                             break;
                     }
-
-                    counter++;
                 }
 
                 return onSuccess(responseResult);
@@ -188,6 +192,7 @@ namespace Flowmailer
 
                 while (keepTrying && counter < 10)
                 {
+                    counter++;
 
                     responseResult = restClient.Execute(request);
 
@@ -203,6 +208,11 @@ namespace Flowmailer
                             if ((error?.Error ?? "") == "invalid_token")
                             {
                                 _accessToken = GetAccessToken().AccessToken;
+                                foreach (var oldAuthHeader in request.Parameters.Where(p => p.Name.Equals("Authorization", StringComparison.OrdinalIgnoreCase)).ToArray())
+                                {
+                                    request.Parameters.Remove(oldAuthHeader);
+                                }
+                                request.AddHeader("Authorization", $"Bearer {_accessToken}");
                                 continue;
                             }
 
@@ -213,8 +223,6 @@ namespace Flowmailer
                             ErrorHandler.ThrowException(responseResult, responseResult.ErrorException);
                             break;
                     }
-
-                    counter++;
                 }
 
                 return onSuccess(responseResult);
